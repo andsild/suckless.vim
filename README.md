@@ -1,3 +1,6 @@
+simple fork of suckless.vim - take away the stacking layout and its keybindings
+
+# Original README.md from suckless.vim
 Tiling window management that sucks less - see <http://wmii.suckless.org/>.
 This emulates wmii in Vim as much as possible. A dwm emulation might come next.
 

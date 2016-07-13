@@ -27,11 +27,11 @@ if !exists("g:MetaSendsEscape")
   let g:MetaSendsEscape = !has("gui_running") && !has("nvim")
 endif
 
-"|    Tabs / views: organize windows in tabs                                {{{
+"|    Tabs / views: organize windows in tabs                                
 "|-----------------------------------------------------------------------------
 
 set tabline=%!SucklessTabLine()
-function! SucklessTabLine() "{{{
+function! SucklessTabLine() "
   let line = ''
   for i in range(tabpagenr('$'))
     " select the highlighting
@@ -76,7 +76,7 @@ function! SucklessTabLine() "{{{
 endfunction "}}}
 
 set guitablabel=%{SucklessTabLabel()}
-function! SucklessTabLabel() "{{{
+function! SucklessTabLabel() "
   " see: http://blog.golden-ratio.net/2008/08/19/using-tabs-in-vim/
 
   " add the Tab number
@@ -109,7 +109,7 @@ function! SucklessTabLabel() "{{{
 endfunction "}}}
 
 " MoveToTab: move/copy current window to another tab
-function! MoveToTab(viewnr, copy) "{{{
+function! MoveToTab(viewnr, copy) "
   " get the current buffer ref
   let bufnr = bufnr("%")
 
@@ -139,16 +139,16 @@ endfunction "}}}
 
 "}}}
 
-"|    Window tiles: selection, movement, resizing                           {{{
+"|    Window tiles: selection, movement, resizing                           
 "|-----------------------------------------------------------------------------
 
-function! GetTilingMode(mode) "{{{
+function! GetTilingMode(mode) "
   if !exists("t:windowMode")
     let t:windowMode = a:mode
   endif
 endfunction "}}}
 
-function! SetTilingMode(mode) "{{{
+function! SetTilingMode(mode) "
   " apply new window mode
   if a:mode == "F"        " Fullscreen mode
     let t:windowSizes = winrestcmd()
@@ -199,7 +199,7 @@ function! SetTilingMode(mode) "{{{
   let t:windowMode = a:mode
 endfunction "}}}
 
-function! WindowCmd(cmd) "{{{
+function! WindowCmd(cmd) "
   let w:maximized = 0
 
   " issue the corresponding 'wincmd'
@@ -208,7 +208,7 @@ function! WindowCmd(cmd) "{{{
 
   " wrap around if needed
   if winnr() == winnr
-    " vertical wrapping {{{
+    " vertical wrapping 
     if "jk" =~ a:cmd
       " wrap around in current column
       if g:SucklessWrapAroundJK == 1
@@ -230,7 +230,7 @@ function! WindowCmd(cmd) "{{{
         endif
       endif
     endif "}}}
-    " horizontal wrapping {{{
+    " horizontal wrapping 
     if "hl" =~ a:cmd
       " wrap around in current window
       if g:SucklessWrapAroundHL == 1
@@ -282,7 +282,7 @@ function! WindowCmd(cmd) "{{{
   endif
 endfunction "}}}
 
-function! WindowMove(direction) "{{{
+function! WindowMove(direction) "
   let winnr = winnr()
   let bufnr = bufnr("%")
 
@@ -330,7 +330,7 @@ function! WindowMove(direction) "{{{
   endif
 endfunction "}}}
 
-function! WindowResize(direction) "{{{
+function! WindowResize(direction) "
   let winnr = winnr()
 
   if a:direction == "j"
@@ -372,7 +372,7 @@ function! WindowResize(direction) "{{{
   endif
 endfunction "}}}
 
-function! WindowCreate(direction) "{{{
+function! WindowCreate(direction) "
   wincmd n
   if t:windowMode == "S"
     wincmd _
@@ -382,13 +382,13 @@ function! WindowCreate(direction) "{{{
   endif
 endfunction "}}}
 
-function! WindowCollapse() "{{{
+function! WindowCollapse() "
   if t:windowMode == "D"
     resize 0
   endif
 endfunction "}}}
 
-function! WindowClose() "{{{
+function! WindowClose() "
   wincmd c
   if t:windowMode == "S"
     wincmd _
@@ -397,17 +397,17 @@ endfunction "}}}
 
 "}}}
 
-"|    Auto-Resize Windows                                                   {{{
+"|    Auto-Resize Windows                                                   
 "|-----------------------------------------------------------------------------
 
-function! AutoResizeWindow() "{{{
+function! AutoResizeWindow() "
   if w:maximized
     wincmd _
   endif
 endfunction "}}}
 
 " Cannot use this because `set eadirection=hor` does not work as expected
-" function! AutoResizeAllWindows() "{{{
+" function! AutoResizeAllWindows() "
 "   if t:windowMode == "S"
 "     set eadirection=hor " XXX not working
 "   else
@@ -416,7 +416,7 @@ endfunction "}}}
 "   wincmd =
 " endfunction "}}}
 
-function! AutoResizeAllWindows() "{{{
+function! AutoResizeAllWindows() "
   let winnr = winnr()
   wincmd =
   if t:windowMode == "S"
@@ -427,7 +427,7 @@ function! AutoResizeAllWindows() "{{{
   endwhile
 endfunction "}}}
 
-function! AutoResizeAllTabs() "{{{
+function! AutoResizeAllTabs() "
   let tabnr = tabpagenr()
   tabdo call AutoResizeAllWindows()
   exe "tabnext " . tabnr
@@ -435,10 +435,10 @@ endfunction "}}}
 
 "}}}
 
-"|    keyboard mappings, Tab management                                     {{{
+"|    keyboard mappings, Tab management                                     
 "|-----------------------------------------------------------------------------
 
-" Alt+[0..9]: select Tab [1..10] {{{
+" Alt+[0..9]: select Tab [1..10] 
 if g:MetaSendsEscape
   nnoremap <silent> <Esc>1 :tabn  1<CR>
   nnoremap <silent> <Esc>2 :tabn  2<CR>
@@ -464,7 +464,7 @@ else
 endif
 "}}}
 
-" <Leader>[1..0]: select Tab [1..10] {{{
+" <Leader>[1..0]: select Tab [1..10] 
 nnoremap <silent> <Leader>1 :tabn  1<CR>
 nnoremap <silent> <Leader>2 :tabn  2<CR>
 nnoremap <silent> <Leader>3 :tabn  3<CR>
@@ -477,7 +477,7 @@ nnoremap <silent> <Leader>9 :tabn  9<CR>
 nnoremap <silent> <Leader>0 :tabn 10<CR>
 "}}}
 
-" <Leader>t[1..0]: move current window to Tab [1..10] {{{
+" <Leader>t[1..0]: move current window to Tab [1..10] 
 nnoremap <silent> <Leader>t1 :call MoveToTab( 1,0)<CR>
 nnoremap <silent> <Leader>t2 :call MoveToTab( 2,0)<CR>
 nnoremap <silent> <Leader>t3 :call MoveToTab( 3,0)<CR>
@@ -490,7 +490,7 @@ nnoremap <silent> <Leader>t9 :call MoveToTab( 9,0)<CR>
 nnoremap <silent> <Leader>t0 :call MoveToTab(10,0)<CR>
 "}}}
 
-" <Leader>T[1..0]: copy current window to Tab [1..10] {{{
+" <Leader>T[1..0]: copy current window to Tab [1..10] 
 nnoremap <silent> <Leader>T1 :call MoveToTab( 1,1)<CR>
 nnoremap <silent> <Leader>T2 :call MoveToTab( 2,1)<CR>
 nnoremap <silent> <Leader>T3 :call MoveToTab( 3,1)<CR>
@@ -505,22 +505,11 @@ nnoremap <silent> <Leader>T0 :call MoveToTab(10,1)<CR>
 
 "}}}
 
-"|    keyboard mappings, Window management                                  {{{
+"|    keyboard mappings, Window management                                  
 "|-----------------------------------------------------------------------------
 
-" Alt+[sdf]: Window mode selection {{{
-if g:MetaSendsEscape
-  nnoremap <silent> <Esc>s :call SetTilingMode("S")<CR>
-  nnoremap <silent> <Esc>d :call SetTilingMode("D")<CR>
-  nnoremap <silent> <Esc>f :call SetTilingMode("F")<CR>
-else
-  nnoremap <silent>  <M-s> :call SetTilingMode("S")<CR>
-  nnoremap <silent>  <M-d> :call SetTilingMode("D")<CR>
-  nnoremap <silent>  <M-f> :call SetTilingMode("F")<CR>
-endif
-"}}}
 
-" Alt+[hjkl]: select window {{{
+" Alt+[hjkl]: select window 
 if g:MetaSendsEscape
   nnoremap <silent> <Esc>h :call WindowCmd("h")<CR>
   nnoremap <silent> <Esc>j :call WindowCmd("j")<CR>
@@ -534,7 +523,7 @@ else
 endif
 "}}}
 
-" Alt+[HJKL]: move current window {{{
+" Alt+[HJKL]: move current window 
 if g:MetaSendsEscape
   nnoremap <silent>  <Esc>H :call WindowMove("h")<CR>
   nnoremap <silent>  <Esc>J :call WindowMove("j")<CR>
@@ -548,7 +537,7 @@ else
 endif
 "}}}
 
-" Ctrl+Alt+[hjkl]: resize current window {{{
+" Ctrl+Alt+[hjkl]: resize current window 
 if g:MetaSendsEscape
   nnoremap <silent> <Esc><C-h> :call WindowResize("h")<CR>
   nnoremap <silent> <Esc><C-j> :call WindowResize("j")<CR>
@@ -564,10 +553,10 @@ endif
 
 "}}}
 
-"|    Alt+[ocw]: create/collapse/close window                               {{{
+"|    Alt+[ocw]: create/collapse/close window                               
 "|-----------------------------------------------------------------------------
 
-" Alt+[oO]: new horizontal/vertical window {{{
+" Alt+[oO]: new horizontal/vertical window 
 " Note: Alt+O is disabled because it messes the arrow key behavior on my box
 if g:MetaSendsEscape
   nnoremap <silent>  <Esc>o :call WindowCreate("s")<CR>
@@ -578,7 +567,7 @@ else
 endif
 "}}}
 
-" Alt+c: collapse current window {{{
+" Alt+c: collapse current window 
 if g:MetaSendsEscape
   nnoremap <silent> <Esc>c :call WindowCollapse()<CR>
 else
@@ -586,7 +575,7 @@ else
 endif
 "}}}
 
-" Alt+w: close current window {{{
+" Alt+w: close current window 
 if g:MetaSendsEscape
   nnoremap <silent> <Esc>w :call WindowClose()<CR>
 else
@@ -596,10 +585,10 @@ endif
 
 "}}}
 
-"|    TODO (not working yet)                                                {{{
+"|    TODO (not working yet)                                                
 "|-----------------------------------------------------------------------------
 
-" tiling modes {{{
+" tiling modes 
 " Two modes should be possible:
 "  * wmii: use as many columns as you want
 "  *  dwm: one master window + one column for all other windows
@@ -615,9 +604,8 @@ endif
 "    for other plugins such as project.tar.gz, ctags, etc.
 "
 " I think the wmii-mode makes much more sense for Vim anyway. ;-)
-" }}}
 
-" preferences {{{
+" preferences 
 " Preferences: key mappings to handle windows and tabs
 " Warning, using <Alt-key> shortcuts is very handy but it can be tricky:
 "  * may conflict with dwm/wmii - set the <Mod> key to <win> for your wm
@@ -635,9 +623,8 @@ let g:SucklessTabKeyMappings = 3  " 0 = none - define your own!
 let g:SucklessTilingEmulation = 1 " 0 = none - define your own!
                                   " 1 = wmii-style (preferred)
                                   " 2 = dwm-style (not working yet)
-" }}}
 
-" Master window (dwm mode) {{{
+" Master window (dwm mode) 
 function! WindowMaster()
   " swap from/to master area
   " get the current buffer ref
@@ -667,7 +654,7 @@ function! WindowMaster()
   endif
 endfunction "}}}
 
-" 'Project' sidebar {{{
+" 'Project' sidebar 
 function! Sidebar()
   if g:loaded_project == 1 && (!exists('g:proj_running') || bufwinnr(g:proj_running) == -1)
     Project   " call Project if hidden
@@ -678,16 +665,13 @@ function! Sidebar()
   endif
 endfunction "}}}
 
-" }}}
 
 if has("autocmd")
   " 'Divided' mode by default - each tab has its own window mode
-  autocmd! TabEnter * call GetTilingMode("D")
+  "autocmd! TabEnter * call GetTilingMode("D")
   " Resize all windows when Vim is resized.
-  autocmd! VimResized * call AutoResizeAllTabs()
+  "autocmd! VimResized * call AutoResizeAllTabs()
   " developer candy: apply all changes immediately
   autocmd! BufWritePost suckless.vim source %
 endif
 call GetTilingMode("D")
-
-" vim: set fdm=marker fmr={{{,}}} fdl=0:

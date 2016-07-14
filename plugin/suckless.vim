@@ -259,7 +259,6 @@ function! WindowCmd(cmd) "
       endif
     endif "}}}
   endif
-  endif
 
   " ensure the window width is greater or equal to the minimum
   if "hl" =~ a:cmd && winwidth(0) < g:SucklessMinWidth

@@ -259,21 +259,6 @@ function! WindowCmd(cmd) "
       endif
     endif "}}}
   endif
-
-  " if the window height is modified, switch to divided mode
-  if "+-" =~ a:cmd
-    let t:windowMode = "D"
-  endif
-
-  " resize window according to the current window mode
-  if t:windowMode == "F"
-    " 'Fullscreen' mode
-    wincmd _   " maximize window height
-    wincmd |   " maximize window width
-  elseif winheight(0) <= 1
-    " window is collapsed, this column must be in 'stacked' mode
-    wincmd _   " maximize window height
-    let w:maximized = 1
   endif
 
   " ensure the window width is greater or equal to the minimum

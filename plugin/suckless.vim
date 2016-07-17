@@ -148,62 +148,6 @@ endfunction "}}}
 "|    Window tiles: selection, movement, resizing                           
 "|-----------------------------------------------------------------------------
 
-function! GetTilingMode(mode) "
-  if !exists("t:windowMode")
-    let t:windowMode = a:mode
-  endif
-endfunction "}}}
-
-function! SetTilingMode(mode) "
-  " apply new window mode
-  if a:mode == "F"        " Fullscreen mode
-    let t:windowSizes = winrestcmd()
-    wincmd |              "   maximize current window vertically and horizontally
-    wincmd _
-    set eadirection=both
-  elseif a:mode == "D"    " Divided mode
-    let w:maximized = 0
-    set eadirection=both  "   hack: create a new window and delete it
-    wincmd n              "   to force windows to get the same height
-    wincmd c
-  elseif a:mode == "S"    " Stacked mode
-    let w:maximized = 1
-    wincmd _              "   maximize current window vertically
-    set eadirection=hor
-  endif
-
-  " when getting back from fullscreen mode, restore all minimum widths
-  if t:windowMode == "F" && a:mode != "F"
-    if exists("t:windowSizes")
-      exe t:windowSizes
-    else
-      " store current window number
-      let winnr = winnr()
-      " check all columns
-      wincmd t
-      let tmpnr = 0
-      while tmpnr != winnr()
-        " restore min width if this column is collapsed
-        if winwidth(0) < g:SucklessMinWidth
-          exe "set winwidth=" . g:SucklessMinWidth
-        endif
-        " balance window heights in this column if switching to 'Divided' mode
-        if a:mode == "D"
-          wincmd n
-          wincmd c
-        endif
-        " next column
-        let tmpnr = winnr()
-        wincmd l
-      endwhile
-      " select window #winnr
-      exe winnr . "wincmd w"
-    endif
-  endif
-
-  " store the new window mode in the current tab's global variables
-  let t:windowMode = a:mode
-endfunction "}}}
 
 function! WindowCmd(cmd) "
   let w:maximized = 0
@@ -320,47 +264,6 @@ function! WindowMove(direction) "
   endif
 endfunction "}}}
 
-
-"|    Auto-Resize Windows                                                   
-"|-----------------------------------------------------------------------------
-
-function! AutoResizeWindow() "
-  if w:maximized
-    wincmd _
-  endif
-endfunction "}}}
-
-" Cannot use this because `set eadirection=hor` does not work as expected
-" function! AutoResizeAllWindows() "
-"   if t:windowMode == "S"
-"     set eadirection=hor " XXX not working
-"   else
-"     set eadirection=both
-"   endif
-"   wincmd =
-" endfunction "}}}
-
-function! AutoResizeAllWindows() "
-  let winnr = winnr()
-  wincmd =
-  if t:windowMode == "S"
-    windo call AutoResizeWindow()
-  endif
-  while winnr != winnr()
-    wincmd w
-  endwhile
-endfunction "}}}
-
-function! AutoResizeAllTabs() "
-  let tabnr = tabpagenr()
-  tabdo call AutoResizeAllWindows()
-  exe "tabnext " . tabnr
-endfunction "}}}
-
-"}}}
-
-"|    keyboard mappings, Tab management                                     
-"|-----------------------------------------------------------------------------
 
 " Alt+[0..9]: select Tab [1..10] 
 if g:MetaSendsEscape
@@ -550,8 +453,6 @@ if has("autocmd")
   " 'Divided' mode by default - each tab has its own window mode
   "autocmd! TabEnter * call GetTilingMode("D")
   " Resize all windows when Vim is resized.
-  "autocmd! VimResized * call AutoResizeAllTabs()
   " developer candy: apply all changes immediately
   autocmd! BufWritePost suckless.vim source %
 endif
-call GetTilingMode("D")

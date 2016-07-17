@@ -114,37 +114,6 @@ function! SucklessTabLabel() "
   return label
 endfunction "}}}
 
-" MoveToTab: move/copy current window to another tab
-function! MoveToTab(viewnr, copy) "
-  " get the current buffer ref
-  let bufnr = bufnr("%")
-
-  " remove current window if 'copy' isn't set
-  if a:copy == 0
-    wincmd c
-  endif
-
-  " get a window in the requested Tab
-  if a:viewnr > tabpagenr('$')
-    " the requested Tab doesn't exist, create it
-    tablast
-    tabnew
-  else
-    " select the requested Tab an add a window with the current buffer
-    exe "tabn " . a:viewnr
-    wincmd l
-    " TODO: if the buffer is already displayed in this Tab, select its window
-    " TODO: if this tab is in 'stacked' or 'fullscreen' mode, expand window
-    " TODO: if there's already an empty window, reuse it
-    wincmd n
-  endif
-
-  " display the current buffer
-  exe "b" . bufnr
-endfunction "}}}
-
-"}}}
-
 "|    Window tiles: selection, movement, resizing                           
 "|-----------------------------------------------------------------------------
 

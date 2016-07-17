@@ -2,11 +2,17 @@
 "| File          : ~/.vim/plugin/suckless.vim
 "| Project page  : https://github.com/fabi1cazenave/suckless.vim
 "| Author        : Fabien Cazenave
+"| Modified/forked by   : Anders Sildnes
 "| Licence       : WTFPL
 "|
 "| Tiling window management that sucks less - see http://suckless.org/
 "| This emulates wmii/i3 in Vim as much as possible.
 "|
+
+function! s:IsMac()
+    let l:sysout=system('uname')
+    return has('unix') && match(l:sysout, '\cDarwin') == 0
+endfunction
 
 " Preferences: window resizing
 let g:SucklessMinWidth = 24       " minimum window width
@@ -314,72 +320,6 @@ function! WindowMove(direction) "
   endif
 endfunction "}}}
 
-function! WindowResize(direction) "
-  let winnr = winnr()
-
-  if a:direction == "j"
-    wincmd j
-    if winnr() != winnr
-      wincmd p
-      exe g:SucklessIncHeight . "wincmd +"
-    else
-      exe g:SucklessIncHeight . "wincmd -"
-    endif
-
-  elseif a:direction == "k"
-    wincmd j
-    if winnr() != winnr
-      wincmd p
-      exe g:SucklessIncHeight . "wincmd -"
-    else
-      exe g:SucklessIncHeight . "wincmd +"
-    endif
-
-  elseif a:direction == "h"
-    wincmd l
-    if winnr() != winnr
-      wincmd p
-      exe g:SucklessIncHeight . "wincmd <"
-    else
-      exe g:SucklessIncHeight . "wincmd >"
-    endif
-
-  elseif a:direction == "l"
-    wincmd l
-    if winnr() != winnr
-      wincmd p
-      exe g:SucklessIncHeight . "wincmd >"
-    else
-      exe g:SucklessIncHeight . "wincmd <"
-    endif
-
-  endif
-endfunction "}}}
-
-function! WindowCreate(direction) "
-  wincmd n
-  if t:windowMode == "S"
-    wincmd _
-  endif
-  if (a:direction == "v")
-    call WindowMove("l")
-  endif
-endfunction "}}}
-
-function! WindowCollapse() "
-  if t:windowMode == "D"
-    resize 0
-  endif
-endfunction "}}}
-
-function! WindowClose() "
-  wincmd c
-  if t:windowMode == "S"
-    wincmd _
-  endif
-endfunction "}}}
-
-"}}}
 
 "|    Auto-Resize Windows                                                   
 "|-----------------------------------------------------------------------------
@@ -445,52 +385,49 @@ else
   nnoremap <silent>  <M-8> :tabn  8<CR>
   nnoremap <silent>  <M-9> :tabn  9<CR>
   nnoremap <silent>  <M-0> :tabn 10<CR>
+  if s:IsMac()
+    nnoremap <silent>  ¡ :tabn  1<CR>
+    nnoremap <silent>  ™ :tabn  2<CR>
+    nnoremap <silent>  £ :tabn  3<CR>
+    nnoremap <silent>  ¢ :tabn  4<CR>
+    nnoremap <silent>  ∞ :tabn  5<CR>
+    nnoremap <silent>  § :tabn  6<CR>
+    nnoremap <silent>  ¶ :tabn  7<CR>
+    nnoremap <silent>  • :tabn  8<CR>
+    nnoremap <silent>  º :tabn 10<CR>
+
+    inoremap <silent>  ¡ <Esc>:tabn  1<CR>
+    inoremap <silent>  ™ <Esc>:tabn  2<CR>
+    inoremap <silent>  £ <Esc>:tabn  3<CR>
+    inoremap <silent>  ¢ <Esc>:tabn  4<CR>
+    inoremap <silent>  ∞ <Esc>:tabn  5<CR>
+    inoremap <silent>  § <Esc>:tabn  6<CR>
+    inoremap <silent>  ¶ <Esc>:tabn  7<CR>
+    inoremap <silent>  • <Esc>:tabn  8<CR>
+    inoremap <silent>  º <Esc>:tabn 10<CR>
+
+    tnoremap <silent>  ¡ <C-\><C-n>:tabn  1<CR>
+    tnoremap <silent>  ™ <C-\><C-n>:tabn  2<CR>
+    tnoremap <silent>  £ <C-\><C-n>:tabn  3<CR>
+    tnoremap <silent>  ¢ <C-\><C-n>:tabn  4<CR>
+    tnoremap <silent>  ∞ <C-\><C-n>:tabn  5<CR>
+    tnoremap <silent>  § <C-\><C-n>:tabn  6<CR>
+    tnoremap <silent>  ¶ <C-\><C-n>:tabn  7<CR>
+    tnoremap <silent>  • <C-\><C-n>:tabn  8<CR>
+    tnoremap <silent>  º <C-\><C-n>:tabn 10<CR>
+
+    vnoremap <silent>  ¡ <Esc>:tabn  1<CR>
+    vnoremap <silent>  ™ <Esc>:tabn  2<CR>
+    vnoremap <silent>  £ <Esc>:tabn  3<CR>
+    vnoremap <silent>  ¢ <Esc>:tabn  4<CR>
+    vnoremap <silent>  ∞ <Esc>:tabn  5<CR>
+    vnoremap <silent>  § <Esc>:tabn  6<CR>
+    vnoremap <silent>  ¶ <Esc>:tabn  7<CR>
+    vnoremap <silent>  • <Esc>:tabn  8<CR>
+    vnoremap <silent>  º<M-0> <Esc>:tabn 10<CR>
+  endif
 endif
 "}}}
-
-" <Leader>[1..0]: select Tab [1..10] 
-nnoremap <silent> <Leader>1 :tabn  1<CR>
-nnoremap <silent> <Leader>2 :tabn  2<CR>
-nnoremap <silent> <Leader>3 :tabn  3<CR>
-nnoremap <silent> <Leader>4 :tabn  4<CR>
-nnoremap <silent> <Leader>5 :tabn  5<CR>
-nnoremap <silent> <Leader>6 :tabn  6<CR>
-nnoremap <silent> <Leader>7 :tabn  7<CR>
-nnoremap <silent> <Leader>8 :tabn  8<CR>
-nnoremap <silent> <Leader>9 :tabn  9<CR>
-nnoremap <silent> <Leader>0 :tabn 10<CR>
-"}}}
-
-" <Leader>t[1..0]: move current window to Tab [1..10] 
-nnoremap <silent> <Leader>t1 :call MoveToTab( 1,0)<CR>
-nnoremap <silent> <Leader>t2 :call MoveToTab( 2,0)<CR>
-nnoremap <silent> <Leader>t3 :call MoveToTab( 3,0)<CR>
-nnoremap <silent> <Leader>t4 :call MoveToTab( 4,0)<CR>
-nnoremap <silent> <Leader>t5 :call MoveToTab( 5,0)<CR>
-nnoremap <silent> <Leader>t6 :call MoveToTab( 6,0)<CR>
-nnoremap <silent> <Leader>t7 :call MoveToTab( 7,0)<CR>
-nnoremap <silent> <Leader>t8 :call MoveToTab( 8,0)<CR>
-nnoremap <silent> <Leader>t9 :call MoveToTab( 9,0)<CR>
-nnoremap <silent> <Leader>t0 :call MoveToTab(10,0)<CR>
-"}}}
-
-" <Leader>T[1..0]: copy current window to Tab [1..10] 
-nnoremap <silent> <Leader>T1 :call MoveToTab( 1,1)<CR>
-nnoremap <silent> <Leader>T2 :call MoveToTab( 2,1)<CR>
-nnoremap <silent> <Leader>T3 :call MoveToTab( 3,1)<CR>
-nnoremap <silent> <Leader>T4 :call MoveToTab( 4,1)<CR>
-nnoremap <silent> <Leader>T5 :call MoveToTab( 5,1)<CR>
-nnoremap <silent> <Leader>T6 :call MoveToTab( 6,1)<CR>
-nnoremap <silent> <Leader>T7 :call MoveToTab( 7,1)<CR>
-nnoremap <silent> <Leader>T8 :call MoveToTab( 8,1)<CR>
-nnoremap <silent> <Leader>T9 :call MoveToTab( 9,1)<CR>
-nnoremap <silent> <Leader>T0 :call MoveToTab(10,1)<CR>
-"}}}
-
-"}}}
-
-"|    keyboard mappings, Window management                                  
-"|-----------------------------------------------------------------------------
 
 
 " Alt+[hjkl]: select window 
@@ -504,6 +441,40 @@ else
   nnoremap <silent>  <M-j> :call WindowCmd("j")<CR>
   nnoremap <silent>  <M-k> :call WindowCmd("k")<CR>
   nnoremap <silent>  <M-l> :call WindowCmd("l")<CR>
+  if s:IsMac()
+    inoremap <silent> ˙ <Esc>:call WindowCmd('h')<CR>
+    inoremap <silent> ∆ <Esc>:call WindowCmd('j')<CR>
+    inoremap <silent> ˚ <Esc>:call WindowCmd('k')<CR>
+    inoremap <silent> ¬ <Esc>:call WindowCmd('l')<CR>
+    tnoremap <silent> ˙ <C-\><C-n>:call WindowCmd('h')<CR>
+    tnoremap <silent> ∆ <C-\><C-n>:call WindowCmd('j')<CR>
+    tnoremap <silent> ˚ <C-\><C-n>:call WindowCmd('k')<CR>
+    tnoremap <silent> ¬ <C-\><C-n>:call WindowCmd('l')<CR>
+    vnoremap <silent> ˙ <C-\><C-n>:call WindowCmd('h')<CR>
+    vnoremap <silent> ∆ <C-\><C-n>:call WindowCmd('j')<CR>
+    vnoremap <silent> ˚ <C-\><C-n>:call WindowCmd('k')<CR>
+    vnoremap <silent> ¬ <C-\><C-n>:call WindowCmd('l')<CR>
+    nnoremap <silent> ˙ <C-\><C-n>:call WindowCmd('h')<CR>
+    nnoremap <silent> ∆ <C-\><C-n>:call WindowCmd('j')<CR>
+    nnoremap <silent> ˚ <C-\><C-n>:call WindowCmd('k')<CR>
+    nnoremap <silent> ¬ <C-\><C-n>:call WindowCmd('l')<CR>
+    inoremap <silent> ˛ <Esc>:call WindowCmd('h')<CR>
+    inoremap <silent> √ <Esc>:call WindowCmd('j')<CR>
+    inoremap <silent> ª <Esc>:call WindowCmd('k')<CR>
+    inoremap <silent> ﬁ <Esc>:call WindowCmd('l')<CR>
+    tnoremap <silent> ˛ <C-\><C-n>:call WindowCmd('h')<CR>
+    tnoremap <silent> √ <C-\><C-n>:call WindowCmd('j')<CR>
+    tnoremap <silent> ª <C-\><C-n>:call WindowCmd('k')<CR>
+    tnoremap <silent> ﬁ <C-\><C-n>:call WindowCmd('l')<CR>
+    vnoremap <silent> ˛ <C-\><C-n>:call WindowCmd('h')<CR>
+    vnoremap <silent> √ <C-\><C-n>:call WindowCmd('j')<CR>
+    vnoremap <silent> ª <C-\><C-n>:call WindowCmd('k')<CR>
+    vnoremap <silent> ﬁ <C-\><C-n>:call WindowCmd('l')<CR>
+    nnoremap <silent> ˛ <C-\><C-n>:call WindowCmd('h')<CR>
+    nnoremap <silent> √ <C-\><C-n>:call WindowCmd('j')<CR>
+    nnoremap <silent> ª <C-\><C-n>:call WindowCmd('k')<CR>
+    nnoremap <silent> ﬁ <C-\><C-n>:call WindowCmd('l')<CR>
+  endif
 endif
 "}}}
 
@@ -514,80 +485,47 @@ if g:MetaSendsEscape
   nnoremap <silent>  <Esc>K :call WindowMove("k")<CR>
   nnoremap <silent>  <Esc>L :call WindowMove("l")<CR>
 else
-  nnoremap <silent> <S-M-h> :call WindowMove("h")<CR>
-  nnoremap <silent> <S-M-j> :call WindowMove("j")<CR>
-  nnoremap <silent> <S-M-k> :call WindowMove("k")<CR>
-  nnoremap <silent> <S-M-l> :call WindowMove("l")<CR>
+    nnoremap <silent> <S-M-h> :call WindowMove("h")<CR>
+    nnoremap <silent> <S-M-j> :call WindowMove("j")<CR>
+    nnoremap <silent> <S-M-k> :call WindowMove("k")<CR>
+    nnoremap <silent> <S-M-l> :call WindowMove("l")<CR>
+
+    if s:IsMac()
+        nnoremap <silent> Ó :call WindowMove("h")<CR>
+        nnoremap <silent> Ô :call WindowMove("j")<CR>
+        nnoremap <silent>  :call WindowMove("k")<CR>
+        nnoremap <silent> Ò :call WindowMove("l")<CR>
+
+        cnoremap <silent> Ó :call WindowMove("h")<CR>
+        cnoremap <silent> Ô :call WindowMove("j")<CR>
+        cnoremap <silent>  :call WindowMove("k")<CR>
+        cnoremap <silent> Ò :call WindowMove("l")<CR>
+
+        inoremap <silent> Ó :call WindowMove("h")<CR>
+        inoremap <silent> Ô :call WindowMove("j")<CR>
+        inoremap <silent>  :call WindowMove("k")<CR>
+        inoremap <silent> Ò :call WindowMove("l")<CR>
+
+        vnoremap <silent> Ó :call WindowMove("h")<CR>
+        vnoremap <silent> Ô :call WindowMove("j")<CR>
+        vnoremap <silent>  :call WindowMove("k")<CR>
+        vnoremap <silent> Ò :call WindowMove("l")<CR>
+
+        tnoremap <silent> Ó <C-\><C-n>:call WindowMove("h")<CR>
+        tnoremap <silent> Ô <C-\><C-n>:call WindowMove("j")<CR>
+        tnoremap <silent>  <C-\><C-n>:call WindowMove("k")<CR>
+        tnoremap <silent> Ò <C-\><C-n>:call WindowMove("l")<CR>
+    endif
 endif
 "}}}
 
-" Ctrl+Alt+[hjkl]: resize current window 
-if g:MetaSendsEscape
-  nnoremap <silent> <Esc><C-h> :call WindowResize("h")<CR>
-  nnoremap <silent> <Esc><C-j> :call WindowResize("j")<CR>
-  nnoremap <silent> <Esc><C-k> :call WindowResize("k")<CR>
-  nnoremap <silent> <Esc><C-l> :call WindowResize("l")<CR>
-else
-  nnoremap <silent>    <C-M-h> :call WindowResize("h")<CR>
-  nnoremap <silent>    <C-M-j> :call WindowResize("j")<CR>
-  nnoremap <silent>    <C-M-k> :call WindowResize("k")<CR>
-  nnoremap <silent>    <C-M-l> :call WindowResize("l")<CR>
-endif
-"}}}
 
 "}}}
 
 "|    Alt+[ocw]: create/collapse/close window                               
 "|-----------------------------------------------------------------------------
 
-" Alt+[oO]: new horizontal/vertical window 
-" Note: Alt+O is disabled because it messes the arrow key behavior on my box
-if g:MetaSendsEscape
-  nnoremap <silent>  <Esc>o :call WindowCreate("s")<CR>
-  "nnoremap <silent>  <Esc>O :call WindowCreate("v")<CR>
-else
-  nnoremap <silent>   <M-o> :call WindowCreate("s")<CR>
-  "nnoremap <silent> <S-M-o> :call WindowCreate("v")<CR>
-endif
-"}}}
 
-" Alt+c: collapse current window 
-if g:MetaSendsEscape
-  nnoremap <silent> <Esc>c :call WindowCollapse()<CR>
-else
-  nnoremap <silent>  <M-c> :call WindowCollapse()<CR>
-endif
-"}}}
-
-" Alt+w: close current window 
-if g:MetaSendsEscape
-  nnoremap <silent> <Esc>w :call WindowClose()<CR>
-else
-  nnoremap <silent>  <M-w> :call WindowClose()<CR>
-endif
-"}}}
-
-"}}}
-
-"|    TODO (not working yet)                                                
-"|-----------------------------------------------------------------------------
-
-" tiling modes 
-" Two modes should be possible:
-"  * wmii: use as many columns as you want
-"  *  dwm: one master window + one column for all other windows
-"
-" The wmii-mode is working properly, though there are a few difference with wmii:
-"  * no 'maximized' mode (*sigh*)
-"  * there's one stacking mode per tab, whereas wmii has one stacking mode per column.
-"
-" The dwm-mode would need some work to become usable:
-"  * the master area should be able to have more than one window (ex: help)
-"  * a specific event handler should prevent to create another column
-"  * a specific column next to the master area (on the left) would be required
-"    for other plugins such as project.tar.gz, ctags, etc.
-"
-" I think the wmii-mode makes much more sense for Vim anyway. ;-)
 
 " preferences 
 " Preferences: key mappings to handle windows and tabs
@@ -607,48 +545,6 @@ let g:SucklessTabKeyMappings = 3  " 0 = none - define your own!
 let g:SucklessTilingEmulation = 1 " 0 = none - define your own!
                                   " 1 = wmii-style (preferred)
                                   " 2 = dwm-style (not working yet)
-
-" Master window (dwm mode) 
-function! WindowMaster()
-  " swap from/to master area
-  " get the current buffer ref
-  let bufnr1 = bufnr("%")
-  let winnr1 = winnr()
-
-  wincmd l
-  let bufnr2 = bufnr("%")
-  let winnr2 = winnr()
-
-  "if bufnr("%") != bufnr1
-  if winnr1 != winnr2
-    " we were in the master area
-    exe "b" . bufnr1
-    wincmd h
-    exe "b" . bufnr2
-    "" get back (cancel action)
-    "wincmd p
-  else
-    " we were in the secondary area
-    wincmd h
-    let bufnr2 = bufnr("%")
-    exe "b" . bufnr1
-    wincmd p
-    exe "b" . bufnr2
-    wincmd h
-  endif
-endfunction "}}}
-
-" 'Project' sidebar 
-function! Sidebar()
-  if g:loaded_project == 1 && (!exists('g:proj_running') || bufwinnr(g:proj_running) == -1)
-    Project   " call Project if hidden
-  elseif bufwinnr(winnr()) < 0
-    wincmd p  " we're in the Sidebar, get back to the buffer window
-  else
-    wincmd t  " we're in a buffer window, go to the Project Sidebar
-  endif
-endfunction "}}}
-
 
 if has("autocmd")
   " 'Divided' mode by default - each tab has its own window mode

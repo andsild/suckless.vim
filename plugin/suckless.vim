@@ -219,7 +219,6 @@ function! WindowMove(direction) "
       wincmd c
       exe 'wincmd ' . a:direction 
       wincmd n
-      echo l:bufnr
       exe 'b' . l:bufnr
     endif
 
@@ -364,30 +363,31 @@ if g:MetaSendsEscape
   nnoremap <silent>  <Esc>K :call WindowMove("k")<CR>
   nnoremap <silent>  <Esc>L :call WindowMove("l")<CR>
 else
-    nnoremap <silent> <S-M-h> :call WindowMove("h")<CR>
-    nnoremap <silent> <S-M-j> :call WindowMove("j")<CR>
-    nnoremap <silent> <S-M-k> :call WindowMove("k")<CR>
-    nnoremap <silent> <S-M-l> :call WindowMove("l")<CR>
+    " TODO: I don't see how to get S-M-<key> binding to work in neovim
+    nnoremap <silent> <c-M-H> :call WindowMove("h")<CR>
+    nnoremap <silent> <c-M-J> :call WindowMove("j")<CR>
+    nnoremap <silent> <c-M-K> :call WindowMove("k")<CR>
+    nnoremap <silent> <c-M-L> :call WindowMove("l")<CR>
 
-    tnoremap <silent> <S-a-h> :call WindowMove("h")<CR>
-    tnoremap <silent> <S-a-j> :call WindowMove("j")<CR>
-    tnoremap <silent> <S-a-k> :call WindowMove("k")<CR>
-    tnoremap <silent> <S-a-l> :call WindowMove("l")<CR>
+    tnoremap <silent> <c-a-h> :call WindowMove("h")<CR>
+    tnoremap <silent> <c-a-j> :call WindowMove("j")<CR>
+    tnoremap <silent> <c-a-k> :call WindowMove("k")<CR>
+    tnoremap <silent> <c-a-l> :call WindowMove("l")<CR>
 
-    inoremap <silent> <S-M-h> :call WindowMove("h")<CR>
-    inoremap <silent> <S-M-j> :call WindowMove("j")<CR>
-    inoremap <silent> <S-M-k> :call WindowMove("k")<CR>
-    inoremap <silent> <S-M-l> :call WindowMove("l")<CR>
+    inoremap <silent> <c-M-h> :call WindowMove("h")<CR>
+    inoremap <silent> <c-M-j> :call WindowMove("j")<CR>
+    inoremap <silent> <c-M-k> :call WindowMove("k")<CR>
+    inoremap <silent> <c-M-l> :call WindowMove("l")<CR>
 
-    vnoremap <silent> <S-M-h> :call WindowMove("h")<CR>
-    vnoremap <silent> <S-M-j> :call WindowMove("j")<CR>
-    vnoremap <silent> <S-M-k> :call WindowMove("k")<CR>
-    vnoremap <silent> <S-M-l> :call WindowMove("l")<CR>
+    vnoremap <silent> <c-M-h> :call WindowMove("h")<CR>
+    vnoremap <silent> <c-M-j> :call WindowMove("j")<CR>
+    vnoremap <silent> <c-M-k> :call WindowMove("k")<CR>
+    vnoremap <silent> <c-M-l> :call WindowMove("l")<CR>
 
-    cnoremap <silent> <S-M-h> :call WindowMove("h")<CR>
-    cnoremap <silent> <S-M-j> :call WindowMove("j")<CR>
-    cnoremap <silent> <S-M-k> :call WindowMove("k")<CR>
-    cnoremap <silent> <S-M-l> :call WindowMove("l")<CR>
+    cnoremap <silent> <c-M-h> :call WindowMove("h")<CR>
+    cnoremap <silent> <c-M-j> :call WindowMove("j")<CR>
+    cnoremap <silent> <c-M-k> :call WindowMove("k")<CR>
+    cnoremap <silent> <c-M-l> :call WindowMove("l")<CR>
 
 
     if s:IsMac()

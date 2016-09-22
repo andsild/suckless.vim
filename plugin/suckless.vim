@@ -1,3 +1,5 @@
+set termencoding=utf-8
+scriptencoding utf8
 "|
 "| File          : ~/.vim/plugin/suckless.vim
 "| Project page  : https://github.com/fabi1cazenave/suckless.vim
@@ -29,8 +31,8 @@ let g:SucklessWrapAroundHL = 1    " 0 = no wrap
 
 " in gVim, Alt sets the 8th bit; otherwise, assume the terminal is 8-bit clean
 " Neovim isn't 8-bit clean yet, see https://github.com/neovim/neovim/issues/3727
-if !exists("g:MetaSendsEscape")
-  let g:MetaSendsEscape = !has("gui_running") && !has("nvim")
+if !exists('g:MetaSendsEscape')
+  let g:MetaSendsEscape = !has('gui_running') && !has('nvim')
 endif
 
 "|    Tabs / views: organize windows in tabs                                
@@ -38,47 +40,47 @@ endif
 
 set tabline=%!SucklessTabLine()
 function! SucklessTabLine() "
-  let line = ''
-  for i in range(tabpagenr('$'))
+  let l:line = ''
+  for l:i in range(tabpagenr('$'))
     " select the highlighting
-    if i+1 == tabpagenr()
-      let line .= '%#TabLineSel#'
+    if l:i+1 == tabpagenr()
+      let l:line .= '%#Tabl:lineSel#'
     else
-      let line .= '%#TabLine#'
+      let l:line .= '%#Tabl:line#'
     endif
 
     " set the tab page number (for mouse clicks)
-    let line .= '%' . (i+1) . 'T'
-    let line .= ' [' . (i+1)
+    let l:line .= '%' . (l:i+1) . 'T'
+    let l:line .= ' [' . (l:i+1)
 
     " modified since the last save?
-    let buflist = tabpagebuflist(i+1)
-    for bufnr in buflist
-      if getbufvar(bufnr, '&modified')
-        let line .= '*'
+    let l:buflist = tabpagebuflist(l:i+1)
+    for l:bufnr in l:buflist
+      if getbufvar(l:bufnr, '&modified')
+        let l:line .= '*'
         break
       endif
     endfor
-    let line .= ']'
+    let l:line .= ']'
 
     " add the file name without path information
-    let buf = buflist[tabpagewinnr(i+1) - 1]
-    let name = bufname(buf)
-    if getbufvar(buf, '&modified') == 1
-      let name .= " +"
+    let l:buf = l:buflist[tabpagewinnr(l:i+1) - 1]
+    let l:name = bufname(l:buf)
+    if getbufvar(l:buf, '&modified') == 1
+      let l:name .= ' +'
     endif
-    let line .= fnamemodify(name, ':t') . ' '
+    let l:line .= fnamemodify(l:name, ':t') . ' '
   endfor
 
-  " after the last tab fill with TabLineFill and reset tab page nr
-  let line .= '%#TabLineFill#%T'
+  " after the last tab fill with Tabl:lineFill and reset tab page nr
+  let l:line .= '%#Tabl:lineFill#%T'
 
   " right-align the label to close the current tab page
   if tabpagenr('$') > 1
-    let line .= '%=%#TabLine#%999X X'
+    let l:line .= '%=%#Tabl:line#%999X X'
   endif
   "echomsg 's:' . s
-  return line
+  return l:line
 endfunction "}}}
 
 set guitablabel=%{SucklessTabLabel()}
@@ -86,13 +88,13 @@ function! SucklessTabLabel() "
   " see: http://blog.golden-ratio.net/2008/08/19/using-tabs-in-vim/
 
   " add the Tab number
-  let label = '['.tabpagenr()
+  let l:label = '['.tabpagenr()
 
   " modified since the last save?
-  let buflist = tabpagebuflist(v:lnum)
-  for bufnr in buflist
-    if getbufvar(bufnr, '&modified')
-      let label .= '*'
+  let l:buflist = tabpagebuflist(v:lnum)
+  for l:bufnr in l:buflist
+    if getbufvar(l:bufnr, '&modified')
+      let l:label .= '*'
       break
     endif
   endfor
@@ -102,16 +104,16 @@ function! SucklessTabLabel() "
   "if wincount > 1
     "let label .= ', '.wincount
   "endif
-  let label .= '] '
+  let l:label .= '] '
 
   " add the file name without path information
-  let name = bufname(buflist[tabpagewinnr(v:lnum) - 1])
-  let label .= fnamemodify(name, ':t')
+  let l:name = bufname(l:buflist[tabpagewinnr(v:lnum) - 1])
+  let l:label .= fnamemodify(l:name, ':t')
   if &modified == 1
-    let label .= " +"
+    let l:label .= ' +'
   endif
 
-  return label
+  return l:label
 endfunction "}}}
 
 "|    Window tiles: selection, movement, resizing                           
@@ -122,116 +124,107 @@ function! WindowCmd(cmd) "
   let w:maximized = 0
 
   " issue the corresponding 'wincmd'
-  let winnr = winnr()
-  exe "wincmd " . a:cmd
+  let l:winnr = winnr()
+  exe 'wincmd ' . a:cmd
 
   " wrap around if needed
-  if winnr() == winnr
+  if winnr() == l:winnr
     " vertical wrapping 
-    if "jk" =~ a:cmd
+    if 'jk' =~? a:cmd
       " wrap around in current column
       if g:SucklessWrapAroundJK == 1
-        let tmpnr = -1
-        while tmpnr != winnr()
-          let tmpnr = winnr()
-          if a:cmd == "j"
+        let l:tmpnr = -1
+        while l:tmpnr != winnr()
+          let l:tmpnr = winnr()
+          if a:cmd ==? 'j'
             wincmd k
-          elseif a:cmd == "k"
+          elseif a:cmd ==? 'k'
             wincmd j
           endif
         endwhile
       " select next/previous window
       elseif g:SucklessWrapAroundJK == 2
-        if a:cmd == "j"
+        if a:cmd ==? 'j'
           wincmd w
-        elseif a:cmd == "k"
+        elseif a:cmd ==? 'k'
           wincmd W
         endif
       endif
     endif "}}}
     " horizontal wrapping 
-    if "hl" =~ a:cmd
+    if 'hl' =~? a:cmd
       " wrap around in current window
       if g:SucklessWrapAroundHL == 1
-        let tmpnr = -1
-        while tmpnr != winnr()
-          let tmpnr = winnr()
-          if a:cmd == "h"
+        let l:tmpnr = -1
+        while l:tmpnr != winnr()
+          let l:tmpnr = winnr()
+          if a:cmd ==? 'h'
             wincmd l
-          elseif a:cmd == "l"
+          elseif a:cmd ==? 'l'
             wincmd h
           endif
         endwhile
       " select next/previous tab
       elseif g:SucklessWrapAroundHL == 2
-        if a:cmd == "h"
+        if a:cmd ==? 'h'
           if tabpagenr() > 1
             tabprev
             wincmd b
           endif
-        elseif a:cmd == "l"
+        elseif a:cmd ==? 'l'
           if tabpagenr() < tabpagenr('$')
             tabnext
             wincmd t
           endif
         endif
       endif
-    endif "}}}
+    endif 
   endif
 
   " ensure the window width is greater or equal to the minimum
-  if "hl" =~ a:cmd && winwidth(0) < g:SucklessMinWidth
-    exe "set winwidth=" . g:SucklessMinWidth
+  if 'hl' =~? a:cmd && winwidth(0) < g:SucklessMinWidth
+    exe 'set winwidth=' . g:SucklessMinWidth
   endif
-endfunction "}}}
+endfunction 
 
 function! WindowMove(direction) "
-  let winnr = winnr()
-  let bufnr = bufnr("%")
+  let l:winnr = winnr()
+  let l:bufnr = bufnr('%')
 
-  if a:direction == "j"        " move window to the previous row
+  if a:direction ==? 'j'        " move window to the previous row
     wincmd j
-    if winnr() != winnr
+    if winnr() != l:winnr
       "exe "normal <C-W><C-X>"
       wincmd k
       wincmd x
       wincmd j
     endif
 
-  elseif a:direction == "k"    " move window to the next row
+  elseif a:direction ==? 'k'    " move window to the next row
     wincmd k
-    if winnr() != winnr
+    if winnr() != l:winnr
       wincmd x
     endif
 
-  elseif "hl" =~ a:direction   " move window to the previous/next column
-    exe "wincmd " . a:direction
-    let newwinnr = winnr()
-    if newwinnr == winnr
+  elseif 'hl' =~? a:direction   " move window to the previous/next column
+    exe 'wincmd ' . a:direction 
+    let l:newwinnr = winnr()
+
+    if l:newwinnr == l:winnr
       " move window to a new column
-      exe "wincmd " . toupper(a:direction)
-      if t:windowMode == "S"
-        wincmd p
-        wincmd _
-        wincmd p
-      endif
+      exe 'wincmd ' . toupper(a:direction)
     else
       " move window to an existing column
       wincmd p
       wincmd c
-      if t:windowMode == "S"
-        wincmd _
-      endif
-      exe newwinnr . "wincmd w"
+      exe 'wincmd ' . a:direction 
       wincmd n
-      if t:windowMode == "S"
-        wincmd _
-      endif
-      exe "b" . bufnr
+      echo l:bufnr
+      exe 'b' . l:bufnr
     endif
 
   endif
-endfunction "}}}
+endfunction 
 
 
 " Alt+[0..9]: select Tab [1..10] 
@@ -257,6 +250,7 @@ else
   nnoremap <silent>  <M-8> :tabn  8<CR>
   nnoremap <silent>  <M-9> :tabn  9<CR>
   nnoremap <silent>  <M-0> :tabn 10<CR>
+
   if s:IsMac()
     nnoremap <silent>  ¡ :tabn  1<CR>
     nnoremap <silent>  ™ :tabn  2<CR>
@@ -304,15 +298,28 @@ endif
 
 " Alt+[hjkl]: select window 
 if g:MetaSendsEscape
-  nnoremap <silent> <Esc>h :call WindowCmd("h")<CR>
-  nnoremap <silent> <Esc>j :call WindowCmd("j")<CR>
-  nnoremap <silent> <Esc>k :call WindowCmd("k")<CR>
-  nnoremap <silent> <Esc>l :call WindowCmd("l")<CR>
+  nnoremap <silent> <Esc>h :call WindowCmd('h')<CR>
+  nnoremap <silent> <Esc>j :call WindowCmd('j')<CR>
+  nnoremap <silent> <Esc>k :call WindowCmd('k')<CR>
+  nnoremap <silent> <Esc>l :call WindowCmd('l')<CR>
 else
-  nnoremap <silent>  <M-h> :call WindowCmd("h")<CR>
-  nnoremap <silent>  <M-j> :call WindowCmd("j")<CR>
-  nnoremap <silent>  <M-k> :call WindowCmd("k")<CR>
-  nnoremap <silent>  <M-l> :call WindowCmd("l")<CR>
+  nnoremap <silent>  <M-h> :call WindowCmd('h')<CR>
+  nnoremap <silent>  <M-j> :call WindowCmd('j')<CR>
+  nnoremap <silent>  <M-k> :call WindowCmd('k')<CR>
+  nnoremap <silent>  <M-l> :call WindowCmd('l')<CR>
+  inoremap <silent> <M-h> <Esc>:call WindowCmd('h')<CR>
+  inoremap <silent> <M-j> <Esc>:call WindowCmd('j')<CR>
+  inoremap <silent> <M-k> <Esc>:call WindowCmd('k')<CR>
+  inoremap <silent> <M-l> <Esc>:call WindowCmd('l')<CR>
+  tnoremap <silent> <M-h> <C-\><C-n>:call WindowCmd("h")<CR>
+  tnoremap <silent> <M-j> <C-\><C-n>:call WindowCmd("j")<CR>
+  tnoremap <silent> <M-k> <C-\><C-n>:call WindowCmd("k")<CR>
+  tnoremap <silent> <M-l> <C-\><C-n>:call WindowCmd("l")<CR>
+  vnoremap <silent> <M-h> <Esc>:call WindowCmd("h")<CR>
+  vnoremap <silent> <M-j> <Esc>:call WindowCmd("j")<CR>
+  vnoremap <silent> <M-k> <Esc>:call WindowCmd("k")<CR>
+  vnoremap <silent> <M-l> <Esc>:call WindowCmd("l")<CR>
+
   if s:IsMac()
     inoremap <silent> ˙ <Esc>:call WindowCmd('h')<CR>
     inoremap <silent> ∆ <Esc>:call WindowCmd('j')<CR>
@@ -361,6 +368,27 @@ else
     nnoremap <silent> <S-M-j> :call WindowMove("j")<CR>
     nnoremap <silent> <S-M-k> :call WindowMove("k")<CR>
     nnoremap <silent> <S-M-l> :call WindowMove("l")<CR>
+
+    tnoremap <silent> <S-a-h> :call WindowMove("h")<CR>
+    tnoremap <silent> <S-a-j> :call WindowMove("j")<CR>
+    tnoremap <silent> <S-a-k> :call WindowMove("k")<CR>
+    tnoremap <silent> <S-a-l> :call WindowMove("l")<CR>
+
+    inoremap <silent> <S-M-h> :call WindowMove("h")<CR>
+    inoremap <silent> <S-M-j> :call WindowMove("j")<CR>
+    inoremap <silent> <S-M-k> :call WindowMove("k")<CR>
+    inoremap <silent> <S-M-l> :call WindowMove("l")<CR>
+
+    vnoremap <silent> <S-M-h> :call WindowMove("h")<CR>
+    vnoremap <silent> <S-M-j> :call WindowMove("j")<CR>
+    vnoremap <silent> <S-M-k> :call WindowMove("k")<CR>
+    vnoremap <silent> <S-M-l> :call WindowMove("l")<CR>
+
+    cnoremap <silent> <S-M-h> :call WindowMove("h")<CR>
+    cnoremap <silent> <S-M-j> :call WindowMove("j")<CR>
+    cnoremap <silent> <S-M-k> :call WindowMove("k")<CR>
+    cnoremap <silent> <S-M-l> :call WindowMove("l")<CR>
+
 
     if s:IsMac()
         nnoremap <silent> Ó :call WindowMove("h")<CR>
@@ -418,10 +446,10 @@ let g:SucklessTilingEmulation = 1 " 0 = none - define your own!
                                   " 1 = wmii-style (preferred)
                                   " 2 = dwm-style (not working yet)
 
-if has("autocmd")
-  " 'Divided' mode by default - each tab has its own window mode
-  "autocmd! TabEnter * call GetTilingMode("D")
-  " Resize all windows when Vim is resized.
-  " developer candy: apply all changes immediately
-  autocmd! BufWritePost suckless.vim source %
-endif
+" if has('autocmd')
+"   " 'Divided' mode by default - each tab has its own window mode
+"   "autocmd! TabEnter * call GetTilingMode("D")
+"   " Resize all windows when Vim is resized.
+"   " developer candy: apply all changes immediately
+"   autocmd! BufWritePost suckless.vim source %
+" endif

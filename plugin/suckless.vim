@@ -369,25 +369,25 @@ else
     nnoremap <silent> <c-M-K> :call WindowMove("k")<CR>
     nnoremap <silent> <c-M-L> :call WindowMove("l")<CR>
 
-    tnoremap <silent> <c-a-h> :call WindowMove("h")<CR>
-    tnoremap <silent> <c-a-j> :call WindowMove("j")<CR>
-    tnoremap <silent> <c-a-k> :call WindowMove("k")<CR>
-    tnoremap <silent> <c-a-l> :call WindowMove("l")<CR>
+    tnoremap <silent> <c-a-h> <C-\><C-n>:call WindowMove("h")<CR>
+    tnoremap <silent> <c-a-j> <C-\><C-n>:call WindowMove("j")<CR>
+    tnoremap <silent> <c-a-k> <C-\><C-n>:call WindowMove("k")<CR>
+    tnoremap <silent> <c-a-l> <C-\><C-n>:call WindowMove("l")<CR>
+                              
+    inoremap <silent> <c-M-h> <C-\><C-n>:call WindowMove("h")<CR>
+    inoremap <silent> <c-M-j> <C-\><C-n>:call WindowMove("j")<CR>
+    inoremap <silent> <c-M-k> <C-\><C-n>:call WindowMove("k")<CR>
+    inoremap <silent> <c-M-l> <C-\><C-n>:call WindowMove("l")<CR>
+                              
+    vnoremap <silent> <c-M-h> <C-\><C-n>:call WindowMove("h")<CR>
+    vnoremap <silent> <c-M-j> <C-\><C-n>:call WindowMove("j")<CR>
+    vnoremap <silent> <c-M-k> <C-\><C-n>:call WindowMove("k")<CR>
+    vnoremap <silent> <c-M-l> <C-\><C-n>:call WindowMove("l")<CR>
 
-    inoremap <silent> <c-M-h> :call WindowMove("h")<CR>
-    inoremap <silent> <c-M-j> :call WindowMove("j")<CR>
-    inoremap <silent> <c-M-k> :call WindowMove("k")<CR>
-    inoremap <silent> <c-M-l> :call WindowMove("l")<CR>
-
-    vnoremap <silent> <c-M-h> :call WindowMove("h")<CR>
-    vnoremap <silent> <c-M-j> :call WindowMove("j")<CR>
-    vnoremap <silent> <c-M-k> :call WindowMove("k")<CR>
-    vnoremap <silent> <c-M-l> :call WindowMove("l")<CR>
-
-    cnoremap <silent> <c-M-h> :call WindowMove("h")<CR>
-    cnoremap <silent> <c-M-j> :call WindowMove("j")<CR>
-    cnoremap <silent> <c-M-k> :call WindowMove("k")<CR>
-    cnoremap <silent> <c-M-l> :call WindowMove("l")<CR>
+    cnoremap <silent> <c-M-h> <C-\><C-n>:call WindowMove("h")<CR>
+    cnoremap <silent> <c-M-j> <C-\><C-n>:call WindowMove("j")<CR>
+    cnoremap <silent> <c-M-k> <C-\><C-n>:call WindowMove("k")<CR>
+    cnoremap <silent> <c-M-l> <C-\><C-n>:call WindowMove("l")<CR>
 
 
     if s:IsMac()

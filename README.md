@@ -1,4 +1,7 @@
 simple fork of suckless.vim - take away the stacking layout and its keybindings
+also removed the tabline functionality
+
+
 
 # Original README.md from suckless.vim
 Tiling window management that sucks less - see <http://wmii.suckless.org/>.

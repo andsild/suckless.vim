@@ -5,6 +5,10 @@ scriptencoding utf8
 "| Project page  : https://github.com/fabi1cazenave/suckless.vim
 "| Author        : Fabien Cazenave
 "| Modified/forked by   : Anders Sildnes
+"| (changes: 
+"removed a lot of functionality, retained ability to move and navigate windows. 
+"Added keymaps for mac, termmode, imode and visua mode
+"
 "| Licence       : WTFPL
 "|
 "| Tiling window management that sucks less - see http://suckless.org/
@@ -37,89 +41,6 @@ endif
 
 "|    Tabs / views: organize windows in tabs                                
 "|-----------------------------------------------------------------------------
-
-set tabline=%!SucklessTabLine()
-function! SucklessTabLine() "
-  let l:line = ''
-  for l:i in range(tabpagenr('$'))
-    " select the highlighting
-    if l:i+1 == tabpagenr()
-      let l:line .= '%#Tabl:lineSel#'
-    else
-      let l:line .= '%#Tabl:line#'
-    endif
-
-    " set the tab page number (for mouse clicks)
-    let l:line .= '%' . (l:i+1) . 'T'
-    let l:line .= ' [' . (l:i+1)
-
-    " modified since the last save?
-    let l:buflist = tabpagebuflist(l:i+1)
-    for l:bufnr in l:buflist
-      if getbufvar(l:bufnr, '&modified')
-        let l:line .= '*'
-        break
-      endif
-    endfor
-    let l:line .= ']'
-
-    " add the file name without path information
-    let l:buf = l:buflist[tabpagewinnr(l:i+1) - 1]
-    let l:name = bufname(l:buf)
-    if getbufvar(l:buf, '&modified') == 1
-      let l:name .= ' +'
-    endif
-    let l:line .= fnamemodify(l:name, ':t') . ' '
-  endfor
-
-  " after the last tab fill with Tabl:lineFill and reset tab page nr
-  let l:line .= '%#Tabl:lineFill#%T'
-
-  " right-align the label to close the current tab page
-  if tabpagenr('$') > 1
-    let l:line .= '%=%#Tabl:line#%999X X'
-  endif
-  "echomsg 's:' . s
-  return l:line
-endfunction "}}}
-
-set guitablabel=%{SucklessTabLabel()}
-function! SucklessTabLabel() "
-  " see: http://blog.golden-ratio.net/2008/08/19/using-tabs-in-vim/
-
-  " add the Tab number
-  let l:label = '['.tabpagenr()
-
-  " modified since the last save?
-  let l:buflist = tabpagebuflist(v:lnum)
-  for l:bufnr in l:buflist
-    if getbufvar(l:bufnr, '&modified')
-      let l:label .= '*'
-      break
-    endif
-  endfor
-
-  " count number of open windows in the Tab
-  "let wincount = tabpagewinnr(v:lnum, '$')
-  "if wincount > 1
-    "let label .= ', '.wincount
-  "endif
-  let l:label .= '] '
-
-  " add the file name without path information
-  let l:name = bufname(l:buflist[tabpagewinnr(v:lnum) - 1])
-  let l:label .= fnamemodify(l:name, ':t')
-  if &modified == 1
-    let l:label .= ' +'
-  endif
-
-  return l:label
-endfunction "}}}
-
-"|    Window tiles: selection, movement, resizing                           
-"|-----------------------------------------------------------------------------
-
-
 function! WindowCmd(cmd) "
   let w:maximized = 0
 
@@ -445,11 +366,3 @@ let g:SucklessTabKeyMappings = 3  " 0 = none - define your own!
 let g:SucklessTilingEmulation = 1 " 0 = none - define your own!
                                   " 1 = wmii-style (preferred)
                                   " 2 = dwm-style (not working yet)
-
-" if has('autocmd')
-"   " 'Divided' mode by default - each tab has its own window mode
-"   "autocmd! TabEnter * call GetTilingMode("D")
-"   " Resize all windows when Vim is resized.
-"   " developer candy: apply all changes immediately
-"   autocmd! BufWritePost suckless.vim source %
-" endif

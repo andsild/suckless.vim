@@ -160,7 +160,6 @@ vnoremap <silent> <M-k> <Esc>:call WindowCmd("k")<CR>
 vnoremap <silent> <M-l> <Esc>:call WindowCmd("l")<CR>
 
 " Alt+[HJKL]: move current window 
-    " TODO: I don't see how to get S-M-<key> binding to work in neovim
 nnoremap <silent> <c-M-H> :call WindowMove("h")<CR>
 nnoremap <silent> <c-M-J> :call WindowMove("j")<CR>
 nnoremap <silent> <c-M-K> :call WindowMove("k")<CR>

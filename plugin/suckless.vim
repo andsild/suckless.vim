@@ -33,12 +33,6 @@ let g:SucklessWrapAroundHL = 1    " 0 = no wrap
                                   " 1 = wrap in current tab    (wmii-like)
                                   " 2 = wrap in all tabs
 
-" in gVim, Alt sets the 8th bit; otherwise, assume the terminal is 8-bit clean
-" Neovim isn't 8-bit clean yet, see https://github.com/neovim/neovim/issues/3727
-if !exists('g:MetaSendsEscape')
-  let g:MetaSendsEscape = !has('gui_running') && !has('nvim')
-endif
-
 "|    Tabs / views: organize windows in tabs                                
 "|-----------------------------------------------------------------------------
 function! WindowCmd(cmd) "
@@ -147,205 +141,50 @@ function! WindowMove(direction) "
 endfunction 
 
 
-" Alt+[0..9]: select Tab [1..10] 
-if g:MetaSendsEscape
-  nnoremap <silent> <Esc>1 :tabn  1<CR>
-  nnoremap <silent> <Esc>2 :tabn  2<CR>
-  nnoremap <silent> <Esc>3 :tabn  3<CR>
-  nnoremap <silent> <Esc>4 :tabn  4<CR>
-  nnoremap <silent> <Esc>5 :tabn  5<CR>
-  nnoremap <silent> <Esc>6 :tabn  6<CR>
-  nnoremap <silent> <Esc>7 :tabn  7<CR>
-  nnoremap <silent> <Esc>8 :tabn  8<CR>
-  nnoremap <silent> <Esc>9 :tabn  9<CR>
-  nnoremap <silent> <Esc>0 :tabn 10<CR>
-else
-  nnoremap <silent>  <M-1> :tabn  1<CR>
-  nnoremap <silent>  <M-2> :tabn  2<CR>
-  nnoremap <silent>  <M-3> :tabn  3<CR>
-  nnoremap <silent>  <M-4> :tabn  4<CR>
-  nnoremap <silent>  <M-5> :tabn  5<CR>
-  nnoremap <silent>  <M-6> :tabn  6<CR>
-  nnoremap <silent>  <M-7> :tabn  7<CR>
-  nnoremap <silent>  <M-8> :tabn  8<CR>
-  nnoremap <silent>  <M-9> :tabn  9<CR>
-  nnoremap <silent>  <M-0> :tabn 10<CR>
-
-  if s:IsMac()
-    nnoremap <silent>  ¡ :tabn  1<CR>
-    nnoremap <silent>  ™ :tabn  2<CR>
-    nnoremap <silent>  £ :tabn  3<CR>
-    nnoremap <silent>  ¢ :tabn  4<CR>
-    nnoremap <silent>  ∞ :tabn  5<CR>
-    nnoremap <silent>  § :tabn  6<CR>
-    nnoremap <silent>  ¶ :tabn  7<CR>
-    nnoremap <silent>  • :tabn  8<CR>
-    nnoremap <silent>  º :tabn 10<CR>
-
-    inoremap <silent>  ¡ <Esc>:tabn  1<CR>
-    inoremap <silent>  ™ <Esc>:tabn  2<CR>
-    inoremap <silent>  £ <Esc>:tabn  3<CR>
-    inoremap <silent>  ¢ <Esc>:tabn  4<CR>
-    inoremap <silent>  ∞ <Esc>:tabn  5<CR>
-    inoremap <silent>  § <Esc>:tabn  6<CR>
-    inoremap <silent>  ¶ <Esc>:tabn  7<CR>
-    inoremap <silent>  • <Esc>:tabn  8<CR>
-    inoremap <silent>  º <Esc>:tabn 10<CR>
-
-    tnoremap <silent>  ¡ <C-\><C-n>:tabn  1<CR>
-    tnoremap <silent>  ™ <C-\><C-n>:tabn  2<CR>
-    tnoremap <silent>  £ <C-\><C-n>:tabn  3<CR>
-    tnoremap <silent>  ¢ <C-\><C-n>:tabn  4<CR>
-    tnoremap <silent>  ∞ <C-\><C-n>:tabn  5<CR>
-    tnoremap <silent>  § <C-\><C-n>:tabn  6<CR>
-    tnoremap <silent>  ¶ <C-\><C-n>:tabn  7<CR>
-    tnoremap <silent>  • <C-\><C-n>:tabn  8<CR>
-    tnoremap <silent>  º <C-\><C-n>:tabn 10<CR>
-
-    vnoremap <silent>  ¡ <Esc>:tabn  1<CR>
-    vnoremap <silent>  ™ <Esc>:tabn  2<CR>
-    vnoremap <silent>  £ <Esc>:tabn  3<CR>
-    vnoremap <silent>  ¢ <Esc>:tabn  4<CR>
-    vnoremap <silent>  ∞ <Esc>:tabn  5<CR>
-    vnoremap <silent>  § <Esc>:tabn  6<CR>
-    vnoremap <silent>  ¶ <Esc>:tabn  7<CR>
-    vnoremap <silent>  • <Esc>:tabn  8<CR>
-    vnoremap <silent>  º<M-0> <Esc>:tabn 10<CR>
-  endif
-endif
-"}}}
-
-
 " Alt+[hjkl]: select window 
-if g:MetaSendsEscape
-  nnoremap <silent> <Esc>h :call WindowCmd('h')<CR>
-  nnoremap <silent> <Esc>j :call WindowCmd('j')<CR>
-  nnoremap <silent> <Esc>k :call WindowCmd('k')<CR>
-  nnoremap <silent> <Esc>l :call WindowCmd('l')<CR>
-else
-  nnoremap <silent>  <M-h> :call WindowCmd('h')<CR>
-  nnoremap <silent>  <M-j> :call WindowCmd('j')<CR>
-  nnoremap <silent>  <M-k> :call WindowCmd('k')<CR>
-  nnoremap <silent>  <M-l> :call WindowCmd('l')<CR>
-  inoremap <silent> <M-h> <Esc>:call WindowCmd('h')<CR>
-  inoremap <silent> <M-j> <Esc>:call WindowCmd('j')<CR>
-  inoremap <silent> <M-k> <Esc>:call WindowCmd('k')<CR>
-  inoremap <silent> <M-l> <Esc>:call WindowCmd('l')<CR>
-  tnoremap <silent> <M-h> <C-\><C-n>:call WindowCmd("h")<CR>
-  tnoremap <silent> <M-j> <C-\><C-n>:call WindowCmd("j")<CR>
-  tnoremap <silent> <M-k> <C-\><C-n>:call WindowCmd("k")<CR>
-  tnoremap <silent> <M-l> <C-\><C-n>:call WindowCmd("l")<CR>
-  vnoremap <silent> <M-h> <Esc>:call WindowCmd("h")<CR>
-  vnoremap <silent> <M-j> <Esc>:call WindowCmd("j")<CR>
-  vnoremap <silent> <M-k> <Esc>:call WindowCmd("k")<CR>
-  vnoremap <silent> <M-l> <Esc>:call WindowCmd("l")<CR>
-
-  if s:IsMac()
-    inoremap <silent> ˙ <Esc>:call WindowCmd('h')<CR>
-    inoremap <silent> ∆ <Esc>:call WindowCmd('j')<CR>
-    inoremap <silent> ˚ <Esc>:call WindowCmd('k')<CR>
-    inoremap <silent> ¬ <Esc>:call WindowCmd('l')<CR>
-    tnoremap <silent> ˙ <C-\><C-n>:call WindowCmd('h')<CR>
-    tnoremap <silent> ∆ <C-\><C-n>:call WindowCmd('j')<CR>
-    tnoremap <silent> ˚ <C-\><C-n>:call WindowCmd('k')<CR>
-    tnoremap <silent> ¬ <C-\><C-n>:call WindowCmd('l')<CR>
-    vnoremap <silent> ˙ <C-\><C-n>:call WindowCmd('h')<CR>
-    vnoremap <silent> ∆ <C-\><C-n>:call WindowCmd('j')<CR>
-    vnoremap <silent> ˚ <C-\><C-n>:call WindowCmd('k')<CR>
-    vnoremap <silent> ¬ <C-\><C-n>:call WindowCmd('l')<CR>
-    nnoremap <silent> ˙ <C-\><C-n>:call WindowCmd('h')<CR>
-    nnoremap <silent> ∆ <C-\><C-n>:call WindowCmd('j')<CR>
-    nnoremap <silent> ˚ <C-\><C-n>:call WindowCmd('k')<CR>
-    nnoremap <silent> ¬ <C-\><C-n>:call WindowCmd('l')<CR>
-    inoremap <silent> ˛ <Esc>:call WindowCmd('h')<CR>
-    inoremap <silent> √ <Esc>:call WindowCmd('j')<CR>
-    inoremap <silent> ª <Esc>:call WindowCmd('k')<CR>
-    inoremap <silent> ﬁ <Esc>:call WindowCmd('l')<CR>
-    tnoremap <silent> ˛ <C-\><C-n>:call WindowCmd('h')<CR>
-    tnoremap <silent> √ <C-\><C-n>:call WindowCmd('j')<CR>
-    tnoremap <silent> ª <C-\><C-n>:call WindowCmd('k')<CR>
-    tnoremap <silent> ﬁ <C-\><C-n>:call WindowCmd('l')<CR>
-    vnoremap <silent> ˛ <C-\><C-n>:call WindowCmd('h')<CR>
-    vnoremap <silent> √ <C-\><C-n>:call WindowCmd('j')<CR>
-    vnoremap <silent> ª <C-\><C-n>:call WindowCmd('k')<CR>
-    vnoremap <silent> ﬁ <C-\><C-n>:call WindowCmd('l')<CR>
-    nnoremap <silent> ˛ <C-\><C-n>:call WindowCmd('h')<CR>
-    nnoremap <silent> √ <C-\><C-n>:call WindowCmd('j')<CR>
-    nnoremap <silent> ª <C-\><C-n>:call WindowCmd('k')<CR>
-    nnoremap <silent> ﬁ <C-\><C-n>:call WindowCmd('l')<CR>
-  endif
-endif
-"}}}
+nnoremap <silent>  <M-h> :call WindowCmd('h')<CR>
+nnoremap <silent>  <M-j> :call WindowCmd('j')<CR>
+nnoremap <silent>  <M-k> :call WindowCmd('k')<CR>
+nnoremap <silent>  <M-l> :call WindowCmd('l')<CR>
+inoremap <silent> <M-h> <Esc>:call WindowCmd('h')<CR>
+inoremap <silent> <M-j> <Esc>:call WindowCmd('j')<CR>
+inoremap <silent> <M-k> <Esc>:call WindowCmd('k')<CR>
+inoremap <silent> <M-l> <Esc>:call WindowCmd('l')<CR>
+tnoremap <silent> <M-h> <C-\><C-n>:call WindowCmd("h")<CR>
+tnoremap <silent> <M-j> <C-\><C-n>:call WindowCmd("j")<CR>
+tnoremap <silent> <M-k> <C-\><C-n>:call WindowCmd("k")<CR>
+tnoremap <silent> <M-l> <C-\><C-n>:call WindowCmd("l")<CR>
+vnoremap <silent> <M-h> <Esc>:call WindowCmd("h")<CR>
+vnoremap <silent> <M-j> <Esc>:call WindowCmd("j")<CR>
+vnoremap <silent> <M-k> <Esc>:call WindowCmd("k")<CR>
+vnoremap <silent> <M-l> <Esc>:call WindowCmd("l")<CR>
 
 " Alt+[HJKL]: move current window 
-if g:MetaSendsEscape
-  nnoremap <silent>  <Esc>H :call WindowMove("h")<CR>
-  nnoremap <silent>  <Esc>J :call WindowMove("j")<CR>
-  nnoremap <silent>  <Esc>K :call WindowMove("k")<CR>
-  nnoremap <silent>  <Esc>L :call WindowMove("l")<CR>
-else
     " TODO: I don't see how to get S-M-<key> binding to work in neovim
-    nnoremap <silent> <c-M-H> :call WindowMove("h")<CR>
-    nnoremap <silent> <c-M-J> :call WindowMove("j")<CR>
-    nnoremap <silent> <c-M-K> :call WindowMove("k")<CR>
-    nnoremap <silent> <c-M-L> :call WindowMove("l")<CR>
+nnoremap <silent> <c-M-H> :call WindowMove("h")<CR>
+nnoremap <silent> <c-M-J> :call WindowMove("j")<CR>
+nnoremap <silent> <c-M-K> :call WindowMove("k")<CR>
+nnoremap <silent> <c-M-L> :call WindowMove("l")<CR>
 
-    tnoremap <silent> <c-a-h> <C-\><C-n>:call WindowMove("h")<CR>
-    tnoremap <silent> <c-a-j> <C-\><C-n>:call WindowMove("j")<CR>
-    tnoremap <silent> <c-a-k> <C-\><C-n>:call WindowMove("k")<CR>
-    tnoremap <silent> <c-a-l> <C-\><C-n>:call WindowMove("l")<CR>
-                              
-    inoremap <silent> <c-M-h> <C-\><C-n>:call WindowMove("h")<CR>
-    inoremap <silent> <c-M-j> <C-\><C-n>:call WindowMove("j")<CR>
-    inoremap <silent> <c-M-k> <C-\><C-n>:call WindowMove("k")<CR>
-    inoremap <silent> <c-M-l> <C-\><C-n>:call WindowMove("l")<CR>
-                              
-    vnoremap <silent> <c-M-h> <C-\><C-n>:call WindowMove("h")<CR>
-    vnoremap <silent> <c-M-j> <C-\><C-n>:call WindowMove("j")<CR>
-    vnoremap <silent> <c-M-k> <C-\><C-n>:call WindowMove("k")<CR>
-    vnoremap <silent> <c-M-l> <C-\><C-n>:call WindowMove("l")<CR>
+tnoremap <silent> <c-a-h> <C-\><C-n>:call WindowMove("h")<CR>
+tnoremap <silent> <c-a-j> <C-\><C-n>:call WindowMove("j")<CR>
+tnoremap <silent> <c-a-k> <C-\><C-n>:call WindowMove("k")<CR>
+tnoremap <silent> <c-a-l> <C-\><C-n>:call WindowMove("l")<CR>
+                          
+inoremap <silent> <c-M-h> <C-\><C-n>:call WindowMove("h")<CR>
+inoremap <silent> <c-M-j> <C-\><C-n>:call WindowMove("j")<CR>
+inoremap <silent> <c-M-k> <C-\><C-n>:call WindowMove("k")<CR>
+inoremap <silent> <c-M-l> <C-\><C-n>:call WindowMove("l")<CR>
+                          
+vnoremap <silent> <c-M-h> <C-\><C-n>:call WindowMove("h")<CR>
+vnoremap <silent> <c-M-j> <C-\><C-n>:call WindowMove("j")<CR>
+vnoremap <silent> <c-M-k> <C-\><C-n>:call WindowMove("k")<CR>
+vnoremap <silent> <c-M-l> <C-\><C-n>:call WindowMove("l")<CR>
 
-    cnoremap <silent> <c-M-h> <C-\><C-n>:call WindowMove("h")<CR>
-    cnoremap <silent> <c-M-j> <C-\><C-n>:call WindowMove("j")<CR>
-    cnoremap <silent> <c-M-k> <C-\><C-n>:call WindowMove("k")<CR>
-    cnoremap <silent> <c-M-l> <C-\><C-n>:call WindowMove("l")<CR>
-
-
-    if s:IsMac()
-        nnoremap <silent> Ó :call WindowMove("h")<CR>
-        nnoremap <silent> Ô :call WindowMove("j")<CR>
-        nnoremap <silent>  :call WindowMove("k")<CR>
-        nnoremap <silent> Ò :call WindowMove("l")<CR>
-
-        cnoremap <silent> Ó :call WindowMove("h")<CR>
-        cnoremap <silent> Ô :call WindowMove("j")<CR>
-        cnoremap <silent>  :call WindowMove("k")<CR>
-        cnoremap <silent> Ò :call WindowMove("l")<CR>
-
-        inoremap <silent> Ó :call WindowMove("h")<CR>
-        inoremap <silent> Ô :call WindowMove("j")<CR>
-        inoremap <silent>  :call WindowMove("k")<CR>
-        inoremap <silent> Ò :call WindowMove("l")<CR>
-
-        vnoremap <silent> Ó :call WindowMove("h")<CR>
-        vnoremap <silent> Ô :call WindowMove("j")<CR>
-        vnoremap <silent>  :call WindowMove("k")<CR>
-        vnoremap <silent> Ò :call WindowMove("l")<CR>
-
-        tnoremap <silent> Ó <C-\><C-n>:call WindowMove("h")<CR>
-        tnoremap <silent> Ô <C-\><C-n>:call WindowMove("j")<CR>
-        tnoremap <silent>  <C-\><C-n>:call WindowMove("k")<CR>
-        tnoremap <silent> Ò <C-\><C-n>:call WindowMove("l")<CR>
-    endif
-endif
-"}}}
-
-
-"}}}
-
-"|    Alt+[ocw]: create/collapse/close window                               
-"|-----------------------------------------------------------------------------
-
+cnoremap <silent> <c-M-h> <C-\><C-n>:call WindowMove("h")<CR>
+cnoremap <silent> <c-M-j> <C-\><C-n>:call WindowMove("j")<CR>
+cnoremap <silent> <c-M-k> <C-\><C-n>:call WindowMove("k")<CR>
+cnoremap <silent> <c-M-l> <C-\><C-n>:call WindowMove("l")<CR>
 
 
 " preferences 
@@ -355,11 +194,11 @@ endif
 "  * may conflict with gVim     - disable the menu to avoid this
 "  * may raise problems in your terminal emulator (e.g. <M-s> on rxvt)
 "  * Shift+Alt+number only works on the US-Qwerty keyboard layout
-let g:SucklessWinKeyMappings = 3  " 0 = none - define your own!
+let g:SucklessWinKeyMappings = 2  " 0 = none - define your own!
                                   " 1 = <Leader> + key(s)
                                   " 2 = <Alt-key>
                                   " 3 = both
-let g:SucklessTabKeyMappings = 3  " 0 = none - define your own!
+let g:SucklessTabKeyMappings = 2  " 0 = none - define your own!
                                   " 1 = <Leader> + key(s)
                                   " 2 = <Alt-key>
                                   " 3 = both

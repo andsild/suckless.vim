@@ -15,12 +15,6 @@ scriptencoding utf8
 "| This emulates wmii/i3 in Vim as much as possible.
 "|
 
-function! s:IsMac()
-    let l:sysout=system('uname')
-    return has('unix') && match(l:sysout, '\cDarwin') == 0
-endfunction
-
-" Preferences: window resizing
 let g:SucklessMinWidth = 24       " minimum window width
 let g:SucklessIncWidth = 12       " width increment
 let g:SucklessIncHeight = 6       " height increment
@@ -32,6 +26,9 @@ let g:SucklessWrapAroundJK = 1    " 0 = no wrap
 let g:SucklessWrapAroundHL = 1    " 0 = no wrap
                                   " 1 = wrap in current tab    (wmii-like)
                                   " 2 = wrap in all tabs
+let g:SucklessWinKeyMappings = 2
+let g:SucklessTabKeyMappings = 2
+let g:SucklessTilingEmulation = 1
 
 "|    Tabs / views: organize windows in tabs                                
 "|-----------------------------------------------------------------------------
@@ -140,7 +137,6 @@ function! WindowMove(direction) "
   endif
 endfunction 
 
-
 " Alt+[hjkl]: select window 
 nnoremap <silent>  <M-h> :call WindowCmd('h')<CR>
 nnoremap <silent>  <M-j> :call WindowCmd('j')<CR>
@@ -185,22 +181,46 @@ cnoremap <silent> <c-M-j> <C-\><C-n>:call WindowMove("j")<CR>
 cnoremap <silent> <c-M-k> <C-\><C-n>:call WindowMove("k")<CR>
 cnoremap <silent> <c-M-l> <C-\><C-n>:call WindowMove("l")<CR>
 
+" dupliate as above, for mac:
+nnoremap <silent> ˙ :call WindowCmd('h')<CR>
+nnoremap <silent> ∆ :call WindowCmd('j')<CR>
+nnoremap <silent> ˚ :call WindowCmd('k')<CR>
+nnoremap <silent> ¬ :call WindowCmd('l')<CR>
+inoremap <silent> ˙ <Esc>:call WindowCmd('h')<CR>
+inoremap <silent> ∆ <Esc>:call WindowCmd('j')<CR>
+inoremap <silent> ˚ <Esc>:call WindowCmd('k')<CR>
+inoremap <silent> ¬ <Esc>:call WindowCmd('l')<CR>
+tnoremap <silent> ˙ <C-\><C-n>:call WindowCmd("h")<CR>
+tnoremap <silent> ∆ <C-\><C-n>:call WindowCmd("j")<CR>
+tnoremap <silent> ˚ <C-\><C-n>:call WindowCmd("k")<CR>
+tnoremap <silent> ¬ <C-\><C-n>:call WindowCmd("l")<CR>
+vnoremap <silent> ˙ <Esc>:call WindowCmd("h")<CR>
+vnoremap <silent> ∆ <Esc>:call WindowCmd("j")<CR>
+vnoremap <silent> ˚ <Esc>:call WindowCmd("k")<CR>
+vnoremap <silent> ¬ <Esc>:call WindowCmd("l")<CR>
 
-" preferences 
-" Preferences: key mappings to handle windows and tabs
-" Warning, using <Alt-key> shortcuts is very handy but it can be tricky:
-"  * may conflict with dwm/wmii - set the <Mod> key to <win> for your wm
-"  * may conflict with gVim     - disable the menu to avoid this
-"  * may raise problems in your terminal emulator (e.g. <M-s> on rxvt)
-"  * Shift+Alt+number only works on the US-Qwerty keyboard layout
-let g:SucklessWinKeyMappings = 2  " 0 = none - define your own!
-                                  " 1 = <Leader> + key(s)
-                                  " 2 = <Alt-key>
-                                  " 3 = both
-let g:SucklessTabKeyMappings = 2  " 0 = none - define your own!
-                                  " 1 = <Leader> + key(s)
-                                  " 2 = <Alt-key>
-                                  " 3 = both
-let g:SucklessTilingEmulation = 1 " 0 = none - define your own!
-                                  " 1 = wmii-style (preferred)
-                                  " 2 = dwm-style (not working yet)
+" Alt+[HJKL]: move current window 
+nnoremap <silent> Ó :call WindowMove("h")<CR>
+nnoremap <silent> Ô :call WindowMove("j")<CR>
+nnoremap <silent>  :call WindowMove("k")<CR>
+nnoremap <silent> Ò :call WindowMove("l")<CR>
+
+tnoremap <silent> Ó <C-\><C-n>:call WindowMove("h")<CR>
+tnoremap <silent> Ô <C-\><C-n>:call WindowMove("j")<CR>
+tnoremap <silent>  <C-\><C-n>:call WindowMove("k")<CR>
+tnoremap <silent> Ò <C-\><C-n>:call WindowMove("l")<CR>
+                          
+inoremap <silent> Ó <C-\><C-n>:call WindowMove("h")<CR>
+inoremap <silent> Ô <C-\><C-n>:call WindowMove("j")<CR>
+inoremap <silent>  <C-\><C-n>:call WindowMove("k")<CR>
+inoremap <silent> Ò <C-\><C-n>:call WindowMove("l")<CR>
+                          
+vnoremap <silent> Ó <C-\><C-n>:call WindowMove("h")<CR>
+vnoremap <silent> Ô <C-\><C-n>:call WindowMove("j")<CR>
+vnoremap <silent>  <C-\><C-n>:call WindowMove("k")<CR>
+vnoremap <silent> Ò <C-\><C-n>:call WindowMove("l")<CR>
+
+cnoremap <silent> Ó <C-\><C-n>:call WindowMove("h")<CR>
+cnoremap <silent> Ô <C-\><C-n>:call WindowMove("j")<CR>
+cnoremap <silent>  <C-\><C-n>:call WindowMove("k")<CR>
+cnoremap <silent> Ò <C-\><C-n>:call WindowMove("l")<CR>

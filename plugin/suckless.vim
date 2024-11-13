@@ -224,3 +224,47 @@ cnoremap <silent> Ó <C-\><C-n>:call WindowMove("h")<CR>
 cnoremap <silent> Ô <C-\><C-n>:call WindowMove("j")<CR>
 cnoremap <silent>  <C-\><C-n>:call WindowMove("k")<CR>
 cnoremap <silent> Ò <C-\><C-n>:call WindowMove("l")<CR>
+
+" dupliate as above, for mac, but with norwegian keys:
+nnoremap <silent> ˛ :call WindowCmd('h')<CR>
+nnoremap <silent> √ :call WindowCmd('j')<CR>
+nnoremap <silent> ª :call WindowCmd('k')<CR>
+nnoremap <silent> ﬁ :call WindowCmd('l')<CR>
+inoremap <silent> ˛ <Esc>:call WindowCmd('h')<CR>
+inoremap <silent> √ <Esc>:call WindowCmd('j')<CR>
+inoremap <silent> ª <Esc>:call WindowCmd('k')<CR>
+inoremap <silent> ﬁ <Esc>:call WindowCmd('l')<CR>
+tnoremap <silent> ˛ <C-\><C-n>:call WindowCmd("h")<CR>
+tnoremap <silent> √ <C-\><C-n>:call WindowCmd("j")<CR>
+tnoremap <silent> ª <C-\><C-n>:call WindowCmd("k")<CR>
+tnoremap <silent> ﬁ <C-\><C-n>:call WindowCmd("l")<CR>
+vnoremap <silent> ˛ <Esc>:call WindowCmd("h")<CR>
+vnoremap <silent> √ <Esc>:call WindowCmd("j")<CR>
+vnoremap <silent> ª <Esc>:call WindowCmd("k")<CR>
+vnoremap <silent> ﬁ <Esc>:call WindowCmd("l")<CR>
+
+" Alt+[HJKL]: move current window 
+nnoremap <silent> Ó :call WindowMove("h")<CR>
+nnoremap <silent> Ô :call WindowMove("j")<CR>
+nnoremap <silent>  :call WindowMove("k")<CR>
+nnoremap <silent> Ò :call WindowMove("l")<CR>
+
+tnoremap <silent> Ó <C-\><C-n>:call WindowMove("h")<CR>
+tnoremap <silent> Ô <C-\><C-n>:call WindowMove("j")<CR>
+tnoremap <silent>  <C-\><C-n>:call WindowMove("k")<CR>
+tnoremap <silent> Ò <C-\><C-n>:call WindowMove("l")<CR>
+                          
+inoremap <silent> Ó <C-\><C-n>:call WindowMove("h")<CR>
+inoremap <silent> Ô <C-\><C-n>:call WindowMove("j")<CR>
+inoremap <silent>  <C-\><C-n>:call WindowMove("k")<CR>
+inoremap <silent> Ò <C-\><C-n>:call WindowMove("l")<CR>
+                          
+vnoremap <silent> Ó <C-\><C-n>:call WindowMove("h")<CR>
+vnoremap <silent> Ô <C-\><C-n>:call WindowMove("j")<CR>
+vnoremap <silent>  <C-\><C-n>:call WindowMove("k")<CR>
+vnoremap <silent> Ò <C-\><C-n>:call WindowMove("l")<CR>
+
+cnoremap <silent> Ó <C-\><C-n>:call WindowMove("h")<CR>
+cnoremap <silent> Ô <C-\><C-n>:call WindowMove("j")<CR>
+cnoremap <silent>  <C-\><C-n>:call WindowMove("k")<CR>
+cnoremap <silent> Ò <C-\><C-n>:call WindowMove("l")<CR>

@@ -1,4 +1,3 @@
-set termencoding=utf-8
 scriptencoding utf8
 "|
 "| File          : ~/.vim/plugin/suckless.vim
